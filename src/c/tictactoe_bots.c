@@ -1,7 +1,10 @@
 #include <stdlib.h>
 #include <pebble.h>
 #include "tictactoe_bots.h"
+
+/*Global bot*/
 bot computer = INTELLIGENT_BOT;
+
 
 void setbot(bot newBot) {
     computer = newBot;

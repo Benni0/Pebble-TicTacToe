@@ -5,6 +5,8 @@
 Window *instruction_window;
 TextLayer *instructionTitle;
 
+void tictactoe_instruction_window_destroy();
+
 void instruction_select_single_click_handler(ClickRecognizerRef recognizer, void *context) {
     botselect_window_create();
     tictactoe_instruction_window_destroy();    
@@ -43,7 +45,6 @@ void tictactoe_instruction_window_create() {
   window_stack_push(instruction_window, true);
 }
 
-/*call from main*/
 void tictactoe_instruction_window_destroy() {
   window_destroy(instruction_window);
 }

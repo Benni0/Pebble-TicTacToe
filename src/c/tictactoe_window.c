@@ -25,6 +25,7 @@ int playerWins = 0;
 int compWins = 0;
 
 void check_game_state();
+void game_window_destroy();
 
 /*draw functions*/
 GRect get_field_outline(Layer *layer) {
@@ -353,7 +354,7 @@ void config_provider(Window *window) {
     window_single_repeating_click_subscribe(BUTTON_ID_DOWN, 500, down_single_click_handler);
     window_single_click_subscribe(BUTTON_ID_SELECT, select_single_click_handler);
     window_single_repeating_click_subscribe(BUTTON_ID_UP, 500, up_single_click_handler);
-     window_single_click_subscribe(BUTTON_ID_BACK, back_single_click_handler);
+    window_single_click_subscribe(BUTTON_ID_BACK, back_single_click_handler);
 }
 /*buttons end*/
 /*Window functions*/
