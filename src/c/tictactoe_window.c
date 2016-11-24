@@ -309,6 +309,12 @@ void game_window_create(){
     window_stack_push(gameWindow, true);
 }
 void game_window_destroy(){
+    int i;
+    layer_destroy(grid_layer);
+    layer_destroy(game_layer);
+    for(i=0;i<9;i++){
+        layer_destroy(selection_layers[i]);
+    }
     window_destroy(gameWindow);
 }
 Window *game_window_get_window(){
