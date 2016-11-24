@@ -18,13 +18,9 @@ int getNthFreeField(int n, int *field) {
     return i;
 }
 int move_drunken_bot(int *field, int movesLeft) {
-    int rnd = rand() % (movesLeft+1);
+    int rnd = rand() % (movesLeft);
     /*cannot use 0*/
-    if(rnd == 0) {
-        rnd = 1;
-        APP_LOG(APP_LOG_LEVEL_DEBUG,"Set random to 1");
-    }
-    int f = getNthFreeField(rnd, field);
+    int f = getNthFreeField(rnd+1, field);
     return f;
 }
 int move_defense_bot(int *field, int movesLeft) {
