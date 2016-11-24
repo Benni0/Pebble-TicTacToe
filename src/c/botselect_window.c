@@ -45,7 +45,7 @@ static void botselect_window_load(Window *window) {
 
     menu_items[num_a_items++] = (SimpleMenuItem) {
         .title = "DRUNKEN BOT",
-        .subtitle = "all fortune",
+        .subtitle = "all random",
         .callback = menu_select_callback,
     };
     menu_items[num_a_items++] = (SimpleMenuItem) {
@@ -60,7 +60,7 @@ static void botselect_window_load(Window *window) {
     };
 
     menu_sections[0] = (SimpleMenuSection) {
-        .title = PBL_IF_RECT_ELSE("Coose a opponent", NULL),
+        .title = PBL_IF_RECT_ELSE("Coose an opponent", NULL),
         .num_items = NUM_MENU_ITEMS,
         .items = menu_items,
     };
