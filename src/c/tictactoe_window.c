@@ -8,6 +8,10 @@ static Layer *game_layer;
 int selectd_field_num=0;
 Layer *selection_layers[9];
 int displayed_selection_layer=0;
+Layer *info_layer;
+TextLayer *text_field;
+char info_text[20];
+
 
 /*ttt vars*/
 int tictactoe_array[9];
@@ -17,25 +21,55 @@ char lastPlayer = ' ';
 int moves = 0;
 int won = 0;
 int winLine[2];
+int playerWins = 0;
+int compWins = 0;
 
 void check_game_state();
 
 /*draw functions*/
+GRect get_field_outline(Layer *layer) {
+    GRect bounds = layer_get_bounds(layer);
+    return GRect(0,0,bounds.size.w,bounds.size.h-20);
+} 
+
 static void draw_grid(Layer *layer, GContext *ctx) {
     Layer *window_layer = window_get_root_layer(gameWindow);
-    GRect bounds = layer_get_bounds(window_layer);
+    GRect bounds = get_field_outline(window_layer);
     graphics_context_set_stroke_color(ctx, GColorBlack);
     graphics_draw_line(ctx, GPoint((bounds.size.w/3), 0), GPoint((bounds.size.w/3), (bounds.size.h)));
     graphics_draw_line(ctx, GPoint(2*(bounds.size.w/3), 0), GPoint(2*(bounds.size.w/3), (bounds.size.h)));
     graphics_draw_line(ctx, GPoint(0, (bounds.size.h/3)), GPoint((bounds.size.w), (bounds.size.h/3)));
     graphics_draw_line(ctx, GPoint(0, 2*(bounds.size.h/3)), GPoint((bounds.size.w), 2*(bounds.size.h/3)));
+    /*bottom Line*/
+    graphics_draw_line(ctx, GPoint(0, bounds.size.h-1), GPoint((bounds.size.w), bounds.size.h-1));
 }
+
+void refresh_info() {
+    Layer *window_layer = window_get_root_layer(gameWindow);
+    snprintf(info_text, sizeof(info_text), "X:%3d  --  O:%3d", playerWins, compWins);
+    text_layer_set_text(text_field, info_text);
+    layer_mark_dirty(window_layer);
+}
+
+void draw_info() {
+    Layer *window_layer = window_get_root_layer(gameWindow);
+    GRect bounds = get_field_outline(window_layer);
+        
+    text_field = text_layer_create(GRect(0,bounds.size.h, bounds.size.w, 20));
+    text_layer_set_text_color(text_field, GColorWhite);
+    text_layer_set_background_color(text_field, GColorBlack);
+    text_layer_set_text_alignment(text_field, GTextAlignmentCenter);
+    info_layer = text_layer_get_layer(text_field);
+    layer_add_child(window_layer, info_layer);
+    refresh_info();
+}
+
 GPoint get_field_center(int i) {
     int x;
     int y;
     if(i>0 && i<10) {
         Layer *window_layer = window_get_root_layer(gameWindow);
-        GRect bounds = layer_get_bounds(window_layer);
+        GRect bounds = get_field_outline(window_layer);
         i--;
         x = (i%3)*(bounds.size.w/3) + (bounds.size.w/3)/2;
         y = (i/3)*(bounds.size.h/3) + (bounds.size.h/3)/2;
@@ -52,7 +86,7 @@ GRect get_field_rect(int i) {
     if(i>0 && i<10) {
         i--;
         Layer *window_layer = window_get_root_layer(gameWindow);
-        GRect bounds = layer_get_bounds(window_layer);
+        GRect bounds = get_field_outline(window_layer);
         x = (i%3)*(bounds.size.w/3);
         y = (i/3)*(bounds.size.h/3);
         x_offset = (bounds.size.w/3);
@@ -154,42 +188,83 @@ void check_game_state() {
         won = 1;
         winLine[0] = 1;
         winLine[1] = 3;
+        if(h_top == 3) {
+            playerWins++;
+        } else {
+            compWins++;
+        }
     }
     if(h_middle == 3 || h_middle == -3) {
         won = 1;
         winLine[0] = 4;
         winLine[1] = 6;
+        if(h_middle == 3) {
+            playerWins++;
+        } else {
+            compWins++;
+        }
     }
     if(h_bottom == 3 || h_bottom == -3) {
         won = 1;
         winLine[0] = 7;
         winLine[1] = 9;
+        if(h_bottom == 3) {
+            playerWins++;
+        } else {
+            compWins++;
+        }
     }
     if(v_left == 3 || v_left == -3) {
         won = 1;
         winLine[0] = 1;
         winLine[1] = 7;
+        if(v_left == 3) {
+            playerWins++;
+        } else {
+            compWins++;
+        }
     }
     if(v_middle == 3 || v_middle == -3) {
         won = 1;
         winLine[0] = 2;
         winLine[1] = 8;
+        if(v_middle == 3) {
+            playerWins++;
+        } else {
+            compWins++;
+        }
     }
     if(v_right == 3 || v_right == -3) {
         won = 1;
         winLine[0] = 3;
         winLine[1] = 9;
+        if(v_right == 3) {
+            playerWins++;
+        } else {
+            compWins++;
+        }
     }
     if(d_lr == 3 || d_lr == -3) {
         won = 1;
         winLine[0] = 1;
         winLine[1] = 9;
+        if(d_lr == 3) {
+            playerWins++;
+        } else {
+            compWins++;
+        }
     }
     if(d_rl == 3 || d_rl == -3) {
         won = 1;
         winLine[0] = 3;
         winLine[1] = 7;
+        if(d_rl == 3) {
+            playerWins++;
+        } else {
+            compWins++;
+        }
     }
+    refresh_info();
     layer_set_update_proc(game_layer, draw_game_state);
     
 }
@@ -295,6 +370,7 @@ void game_window_load(Window *window){
     game_layer = layer_create(bounds);
     layer_add_child(window_layer, game_layer);
     draw_selectors();
+    draw_info();
 }
 void game_window_unload(Window *window){
 }
@@ -315,7 +391,8 @@ void game_window_destroy(){
     for(i=0;i<9;i++){
         layer_destroy(selection_layers[i]);
     }
-    window_destroy(gameWindow);
+    layer_destroy(info_layer);
+    window_destroy(gameWindow);    
 }
 Window *game_window_get_window(){
     return gameWindow;
