@@ -24,7 +24,7 @@ static void instruction_window_load(Window *window) {
     Layer *window_layer = window_get_root_layer(window);
     GRect bounds = layer_get_bounds(window_layer);
     instructionTitle = text_layer_create(GRect(0, 0, bounds.size.w, bounds.size.h));
-    text_layer_set_text(instructionTitle, "Use UP and DOWN button for field selection. Choose the selected field with the SELECT button. If you don't want the first move, press the SELECT button at first and the computer will move.\n\n Press SELECT to go on.");
+    text_layer_set_text(instructionTitle, "Use UP and DOWN buttons for field selection. Choose the selected field with the SELECT button. If you don't want to start, press the SELECT button at first and the computer will move.\n\nPress SELECT to go on.");
     text_layer_set_text_alignment(instructionTitle, GTextAlignmentCenter);/*center*/
     layer_add_child(window_layer, text_layer_get_layer(instructionTitle));
 }
