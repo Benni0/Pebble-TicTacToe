@@ -55,6 +55,7 @@ static void botselect_window_load(Window *window) {
   };
 
     menu_sections[0] = (SimpleMenuSection) {
+        .title = PBL_IF_RECT_ELSE("Coose a opponent", NULL),
         .num_items = NUM_MENU_ITEMS,
         .items = menu_items,
     };

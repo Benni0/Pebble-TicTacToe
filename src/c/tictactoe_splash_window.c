@@ -10,7 +10,7 @@ void tictactoe_splash_window_destroy();
 static void splash_window_load(Window *window) {
     Layer *window_layer = window_get_root_layer(window);
     GRect bounds = layer_get_bounds(window_layer);
-    splashTitle = text_layer_create(GRect(0, 0, bounds.size.w, bounds.size.h));
+    splashTitle = text_layer_create(GRect(0, 40, bounds.size.w, bounds.size.h-40));
     text_layer_set_text(splashTitle, "TIC\nTAC\nTOE");
     text_layer_set_text_alignment(splashTitle, GTextAlignmentCenter);/*center*/
     layer_add_child(window_layer, text_layer_get_layer(splashTitle));
