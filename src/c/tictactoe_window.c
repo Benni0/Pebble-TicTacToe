@@ -128,7 +128,7 @@ void display_field_selector(int field) {
     if(displayed_selection_layer != 0) {
         layer_remove_from_parent(selection_layers[displayed_selection_layer-1]);
     }
-    if(field > 0 && field < 10) {
+    if(field > 0 && field < 10 && won != 1) {
         Layer *window_layer = window_get_root_layer(gameWindow);
         layer_add_child(window_layer, selection_layers[field-1]);
         displayed_selection_layer=field;
